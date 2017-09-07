@@ -10,7 +10,7 @@ class MainController extends Controller
 {
     public function showIndex()
     {
-        return view('device_registration');
+        return view('index');
     }
 
     public function registerVehicle()

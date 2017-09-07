@@ -1,25 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Vehicle info Web App</title>
-
-    <!-- material Css CDN -->
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-
-    <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-
-    <!--Let browser know website is optimized for mobile-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-    <link rel="stylesheet" href="{{ url('css/style.css') }}">
-
-</head>
-
-<body>
+@extends('base')
+@section('title') Device List @endsection
+@section('content')
 <div class="background_page"></div>
 <!-- Container Block -->
 
@@ -57,10 +38,9 @@
         </table>
          @else
             <div class="error-box">
-                Soory! No device registered yet
+                Sorry! No device registered yet
             </div>
         @endif
     </div>
 </div>
-</body>
-</html>
+@endsection

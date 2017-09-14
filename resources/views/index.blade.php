@@ -1,5 +1,8 @@
 @extends('base')
 @section('title') Vehicle Management App @endsection
+@section('head-script')
+    @include('pusher-script')
+@endsection
 @section('content')
 <div class="background_page"></div>
 
@@ -33,13 +36,13 @@
             <div class="row card_margin">
                 <div class="col s6 card card_padding">
                     <p class="index_sub_head"><u>Engine RPM</u></p>
-                    <p class="value color_blue">0</p>
+                    <p class="value color_blue engine-rpm">{{ $data['engine_rpm'] ? $data['engine_rpm']  :0 }}</p>
                     <p class="unit center_circle">rpm</p>
                 </div>
 
                 <div class="col s6 card card_padding">
                     <p class="index_sub_head"><u>Vehicle Speed</u></p>
-                    <p class="value color_pink">0</p>
+                    <p class="value color_pink">{{ $data['speed'] ? $data['speed'] : 0 }}</p>
                     <p class="unit center_circle">km/hr</p>
                 </div>
             </div>
@@ -47,12 +50,12 @@
             <div class="row card_margin">
                 <div class="col s6 card card_padding">
                     <p class="index_sub_head"><u>Absolute Load Value</u></p>
-                    <p class="value color_yellow">0</p>
+                    <p class="value color_yellow">{{ $data['engine_load'] ? $data['engine_load'] : 0 }}</p>
                     <p class="unit center_circle">%</p>
                 </div>
                 <div class="col s6 card card_padding">
                     <p class="index_sub_head"><u>Engine Coolant Temperature</u></p>
-                    <p class="value color8">0</p>
+                    <p class="value color8">{{ $data['engine_coolent_temp'] ? $data['engine_coolent_temp'] : 0 }}</p>
                     <p class="unit center_circle">&#8451;</p>
                 </div>
             </div>
@@ -60,7 +63,7 @@
             <div class="row card_margin">
                 <div class="col s6 card card_padding">
                     <p class="index_sub_head"><u>Intake Air Temperature</u></p>
-                    <p class="value color7">0</p>
+                    <p class="value color7">{{ $data['intake_air_temp'] ? $data['intake_air_temp'] : 0 }}</p>
                     <p class="unit center_circle">kPa</p>
                 </div>
                 <div class="col s6 card card_padding">
@@ -73,12 +76,12 @@
             <div class="row card_margin">
                 <div class="col s6 card card_padding">
                     <p class="index_sub_head"><u>Time Since Engine Start</u></p>
-                    <p class="value color11">0</p>
+                    <p class="value color11">{{ $data['runtime_since_engine_start'] ? $data['runtime_since_engine_start'] : 0 }}</p>
                     <p class="unit center_circle">seconds</p>
                 </div>
                 <div class="col s6 card card_padding">
                     <p class="index_sub_head"><u>Distance Travelled With MIL</u></p>
-                    <p class="value color8">0</p>
+                    <p class="value color8">{{ $data['dist_travelled_with_MIL'] ? $data['dist_travelled_with_MIL'] : 0 }}</p>
                     <p class="unit center_circle">km</p>
                 </div>
             </div>
@@ -92,7 +95,7 @@
                 </div>
                 <div class="col s6 card card_padding">
                     <p class="index_sub_head"><u>Distance Travelled Since Codes</u></p>
-                    <p class="value color6">0</p>
+                    <p class="value color6">{{ $data['dist_travelled_since_code_cleared'] ? $data['dist_travelled_since_code_cleared'] : 0 }}</p>
                     <p class="unit center_circle">km</p>
                 </div>
             </div>
@@ -118,12 +121,12 @@
             <div class="row card_margin">
                 <div class="col s6 card card_padding">
                     <p class="index_sub_head"><u>Engine RPM</u></p>
-                    <p class="value color_blue">0</p>
+                    <p class="value color_blue">{{ $data['engine_rpm'] ? $data['engine_rpm']  :0 }}</p>
                     <p class="unit center_circle">rpm</p>
                 </div>
                 <div class="col s6 card card_padding">
                     <p class="index_sub_head"><u>Engine Temperature</u></p>
-                    <p class="value color_pink">0</p>
+                    <p class="value color_pink">{{ $data['engine_coolent_temp'] ? $data['engine_coolent_temp'] : 0 }}</p>
                     <p class="unit center_circle">&#8451;</p>
                 </div>
             </div>
@@ -131,7 +134,7 @@
             <div class="row card_margin">
                 <div class="col s6 card card_padding">
                     <p class="index_sub_head"><u>Throttle Position</u></p>
-                    <p class="value color_yellow">0</p>
+                    <p class="value color_yellow">{{ $data['throttle_position'] ? $data['throttle_position'] : 0 }}</p>
                     <p class="unit center_circle">%</p>
                 </div>
                 <div class="col s6 card card_padding">
@@ -145,7 +148,7 @@
             <div class="row card_margin">
                 <div class="col s6 card card_padding">
                     <p class="index_sub_head"><u>Calculated Engine Load</u></p>
-                    <p class="value color7">0</p>
+                    <p class="value color7">{{ $data['engine_load'] ? $data['engine_load'] : 0 }}</p>
                     <p class="unit center_circle">%</p>
                 </div>
                 <div class="col s6 card card_padding">

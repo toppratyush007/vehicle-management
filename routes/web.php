@@ -11,7 +11,11 @@
 |
 */
 
-Route::get('/','MainController@showIndex');
+Route::get('/{deviceId}','MainController@showIndex');
 Route::get('/register-vehicle','MainController@registerVehicle');
 Route::post('/register-vehicle','MainController@saveVehicleDetails');
 Route::get('/devices','MainController@seeDevicesList');
+Route::get('/triggerData/{deviceId}','MainController@showLiveData');
+
+// todo :: remove below route
+Route::get('dummy/{deviceId}','MainController@dummyData');

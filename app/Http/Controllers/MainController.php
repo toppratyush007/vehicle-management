@@ -4,13 +4,30 @@ namespace App\Http\Controllers;
 
 use App\Models\DeviceConfig;
 use App\Models\DeviceDetails;
+use App\Models\ShowData;
 use Illuminate\Http\Request;
+use Pusher\Pusher;
 
 class MainController extends Controller
 {
-    public function showIndex()
+    public function showIndex($deviceId)
     {
-        return view('index');
+        $error = $this->validateDevice($deviceId);
+        if($error){
+            return $error;
+        }
+
+        $data = ShowData::where('device_id', $deviceId)->orderBy('id', 'DESC')->first();
+
+        if($data){
+            return view('index', compact('data'));
+        }
+        else{
+            return response()->json([
+                'success' => false,
+                'error' => "No data available to show"
+                ]);
+        }
     }
 
     public function registerVehicle()
@@ -59,5 +76,44 @@ class MainController extends Controller
         $devices = DeviceDetails::orderBy('device_id', 'asc')->get();
 
         return view('device', compact('devices'));
+    }
+
+    public function showLiveData($deviceId){
+        $response = ['success' => false];
+
+        $error = $this->validateDevice($deviceId);
+        if($error){
+            $response['error'] = "Device Doesn't exist!";
+            return response()->json($response);
+        }
+        return $this->showIndex($deviceId);
+    }
+
+    private function validateDevice($deviceId){
+
+        $device = DeviceDetails::find($deviceId);
+        if(!$device){
+            return "No device is selected please enter a device_id";
+        }
+        else {
+            return false;
+        }
+    }
+
+    private function broadcastData($data)
+    {
+
+        $options = array(
+            'cluster' => 'ap2',
+            'encrypted' => true
+        );
+        $pusher = new Pusher(
+            'e9282422f2a20f13c198',
+            'b5b4752b64428497bd45',
+            '400257',
+            $options
+        );
+
+        $pusher->trigger('my-channel', 'my-event', $data);
     }
 }

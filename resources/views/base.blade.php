@@ -2,6 +2,8 @@
 <html>
 <head>
     <title>@yield('title')</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
 
     <!-- material Css CDN -->
 
@@ -13,6 +15,8 @@
     <script src="{{ url('js/materialize.min.js') }}"></script>
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    @yield('head-script')
 
 </head>
 <body>

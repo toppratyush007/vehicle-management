@@ -10,6 +10,19 @@ use Pusher\Pusher;
 
 class MainController extends Controller
 {
+    public function homePage()
+    {
+        $hasDevice = DeviceDetails::orderBy('device_id','ASC')->first();
+        if($hasDevice) {
+            return $this->showIndex($hasDevice->device_id);
+        }
+        else{
+            return response()->json([
+                'code' => 404,
+                'message' => 'No device found'
+            ]);
+        }
+    }
     public function showIndex($deviceId)
     {
         $error = $this->validateDevice($deviceId);
@@ -68,7 +81,7 @@ class MainController extends Controller
         $vehicle->entry_date = strtotime($request->input('entry_date'));
         $vehicle->save();
 
-        return "Success";
+        return "Vehicle registered successfully";
     }
 
     public function seeDevicesList()
@@ -80,13 +93,15 @@ class MainController extends Controller
 
     public function showLiveData($deviceId){
         $response = ['success' => false];
-
         $error = $this->validateDevice($deviceId);
         if($error){
             $response['error'] = "Device Doesn't exist!";
             return response()->json($response);
         }
-        return $this->showIndex($deviceId);
+
+        //get the latest data
+        $data  = ShowData::where('device_id', $deviceId)->orderBy('id','DESC')->first();
+        $this->broadcastData($data);
     }
 
     private function validateDevice($deviceId){

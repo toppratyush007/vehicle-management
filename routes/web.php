@@ -11,7 +11,8 @@
 |
 */
 
-Route::get('/{deviceId}','MainController@showIndex');
+Route::get('/','MainController@homePage');
+Route::get('live/{deviceId}','MainController@showIndex');
 Route::get('/register-vehicle','MainController@registerVehicle');
 Route::post('/register-vehicle','MainController@saveVehicleDetails');
 Route::get('/devices','MainController@seeDevicesList');

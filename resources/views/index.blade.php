@@ -10,7 +10,7 @@
 
     <div class = "row action_bar">
         <div class="title">
-            <img src="images/softcloud_social_share.png" width="160px">
+            <img src="{{ url('images/softcloud_social_share.png') }}" width="160px">
             <div class="cont">
                 <img src="" alt="" width="" height="">
             </div>

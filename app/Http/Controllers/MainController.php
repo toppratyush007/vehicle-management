@@ -92,6 +92,7 @@ class MainController extends Controller
     }
 
     public function showLiveData($deviceId){
+
         $response = ['success' => false];
         $error = $this->validateDevice($deviceId);
         if($error){
@@ -129,6 +130,6 @@ class MainController extends Controller
             $options
         );
 
-        $pusher->trigger('my-channel', 'my-event', $data);
+        $pusher->trigger('my-channel'.$data['device_id'], 'my-event', $data);
     }
 }

@@ -17,7 +17,7 @@ class CreateTableShowData extends Migration
 
             $table->increments('id');
             $table->string('device_id')->references('device_id')->on('device_details');
-            $table->float('engine_load');
+            $table->float('engine_load')->nullable();
             $table->integer('engine_coolent_temp')->nullable();
             $table->float('fuel_pressure')->nullable();
             $table->float('intake_manifold_pressure')->nullable();

@@ -11,6 +11,12 @@
 |
 */
 
+
+/**
+ * @author :=> Vikash Kashyap <vikashkrkashyap@gmail.com>
+ * @Since  :=> 5 september 2017
+ */
+
 Route::get('/','MainController@homePage');
 Route::get('live/{deviceId}','MainController@showIndex');
 Route::get('/register-vehicle','MainController@registerVehicle');

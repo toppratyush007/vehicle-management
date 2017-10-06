@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ShowData extends Model
+class ShowData extends BaseModel
 {
     protected $table = 'show_data';
     protected $guarded = ['id'];
-    public $timestamps = false;
+    public $timestamps = true;
 }

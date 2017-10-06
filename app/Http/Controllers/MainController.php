@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @author :=> Vikash <vikashkrkashyap@gmail.com>
+ * @since :=> 5 september 2017
+ */
 namespace App\Http\Controllers;
 
 use App\Models\DeviceConfig;

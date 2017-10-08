@@ -8,5 +8,4 @@ class ShowData extends BaseModel
 {
     protected $table = 'show_data';
     protected $guarded = ['id'];
-    public $timestamps = true;
 }

@@ -2,6 +2,7 @@
 @section('title') Vehicle Management App @endsection
 @section('head-script')
     @include('pusher-script')
+    @include('mqtt-client')
 @endsection
 @section('content')
 <div class="background_page"></div>

@@ -2,7 +2,7 @@
 <script>
 
 //    // Enable pusher logging - don't include this in production
-//    Pusher.logToConsole = true;
+    Pusher.logToConsole = true;
 
     var pusher = new Pusher('e9282422f2a20f13c198', {
         cluster: 'ap2',
@@ -10,7 +10,9 @@
     });
 
     var channel = pusher.subscribe('my-channel'+"{{ $data['device_id'] }}");
+
     channel.bind('my-event', function(data) {
+
         // update the data to chanel
         $('.engine-rpm').text(data.engine_rpm);
         $('.speed').text(data.speed?data.speed:0);

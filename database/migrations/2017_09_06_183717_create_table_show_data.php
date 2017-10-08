@@ -26,7 +26,7 @@ class CreateTableShowData extends Migration
             $table->integer('intake_air_temp')->nullable();
             $table->integer('mass_airflow_rate')->nullable();
             $table->integer('throttle_position')->nullable();
-            $table->integer('runtime_since_engine_start')->nullable();
+            $table->string('runtime_since_engine_start')->nullable();
             $table->integer('dist_travelled_with_MIL')->nullable();
             $table->float('fuel_rail_pressure')->nullable();
             $table->float('o2_sensor1')->nullable();

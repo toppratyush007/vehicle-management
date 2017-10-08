@@ -26,6 +26,7 @@ class ChangeTableDeviceDetails extends Migration
             $deviceDetails->device_id = $info['id'];
             $deviceDetails->status = $info['status'];
             $deviceDetails->name = $name;
+
             $deviceDetails->save();
         }
     }

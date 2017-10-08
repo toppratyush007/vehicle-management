@@ -10,6 +10,7 @@ use App\Models\DeviceConfig;
 use App\Models\DeviceDetails;
 use App\Models\ShowData;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Pusher\Pusher;
 
 class MainController extends Controller
@@ -34,17 +35,9 @@ class MainController extends Controller
             return $error;
         }
 
+        $this->initShowData($deviceId);
         $data = ShowData::where('device_id', $deviceId)->orderBy('id', 'DESC')->first();
-
-        if($data){
-            return view('index', compact('data'));
-        }
-        else{
-            return response()->json([
-                'success' => false,
-                'error' => "No data available to show"
-                ]);
-        }
+        return view('index', compact('data'));
     }
 
     public function registerVehicle()
@@ -95,17 +88,32 @@ class MainController extends Controller
         return view('device', compact('devices'));
     }
 
-    public function showLiveData($deviceId){
+    public function setPopulateData($deviceId, Request $request){
 
         $response = ['success' => false];
+        $payload = $request->input('payload');
+
         $error = $this->validateDevice($deviceId);
         if($error){
             $response['error'] = "Device Doesn't exist!";
             return response()->json($response);
         }
 
+        try{
+            $data = $this->getDeviceData($deviceId, $payload);
+            $hasDataExist = ShowData::where('device_id', $deviceId)->first();
+
+            if($hasDataExist){
+                $hasDataExist->update($data);
+            }
+            else{
+               ShowData::create($data);
+            }
+        }catch (\Exception $e){
+            return response()->json(['success' => false, 'error' => 'Server error in updating device data']);
+        }
+
         //get the latest data
-        $data  = ShowData::where('device_id', $deviceId)->orderBy('id','DESC')->first();
         $this->broadcastData($data);
     }
 
@@ -113,7 +121,7 @@ class MainController extends Controller
 
         $device = DeviceDetails::find($deviceId);
         if(!$device){
-            return "No device is selected please enter a device_id";
+            return "Invalid device id";
         }
         else {
             return false;
@@ -134,6 +142,39 @@ class MainController extends Controller
             $options
         );
 
+        Log::info('before trigerring data');
         $pusher->trigger('my-channel'.$data['device_id'], 'my-event', $data);
     }
+
+    private function getDeviceData($deviceId, $payload){
+
+        $data = [
+            'device_id' => $deviceId,
+            'engine_load' => $payload['ENGINE_LOAD'],
+            'engine_coolent_temp' => $payload['ENGINE_COOLANT_TEMP'],
+            'fuel_pressure' => $payload['FUEL_PRESSURE'],
+            'intake_manifold_pressure' => $payload['INTAKE_MANIFOLD_PRESSURE'],
+            'engine_rpm' => $payload['ENGINE_RPM'],
+            'speed' => $payload['SPEED'],
+            'intake_air_temp' => $payload['AIR_INTAKE_TEMP'],
+            'throttle_position' => $payload['THROTTLE_POS'],
+            'runtime_since_engine_start' => $payload['ENGINE_RUNTIME'],
+            'dist_travelled_with_MIL' => $payload['DISTANCE_TRAVELED_MIL_ON'],
+            'fuel_rail_pressure' => $payload['FUEL_RAIL_PRESSURE'],
+            'barometric_pressure' => $payload['BAROMETRIC_PRESSURE'],
+            'fuel_level' => $payload['FUEL_LEVEL'],
+            'ambient_air_temp' => $payload['AMBIENT_AIR_TEMP']
+        ];
+
+        return  array_map(function($entry){
+            return (float)$entry;
+        }, $data);
+    }
+
+    private function initShowData($deviceId){
+        ShowData::create([
+            'device_id' => $deviceId
+        ]);
+    }
+
 }

@@ -1,7 +1,6 @@
 @extends('base')
 @section('title') Vehicle Management App @endsection
 @section('head-script')
-    @include('pusher-script')
     @include('mqtt-client')
 @endsection
 @section('content')
@@ -11,7 +10,7 @@
 
     <div class = "row action_bar">
         <div class="title">
-            <img src="{{ url('images/softcloud_social_share.png') }}" width="160px">
+            <img src="{{ url('images/softclouds_logo.png') }}" width="160px">
             <div class="cont">
                 <img src="" alt="" width="" height="">
             </div>
@@ -19,7 +18,7 @@
     </div>
 
     <div class="row card_margin">
-        <ul class="tabs tabs-fixed-width" style="background:#FFBD33">
+        <ul class="tabs tabs-fixed-width" style="background:#000D45">
             <li class="tab col s3"><a class="active font_color_tab font_color_tab_unselected" href="#common">Common</a></li>
             <li class="tab col s3"><a  href="#engine" class="font_color_tab font_color_tab_unselected">Engine</a></li>
             <li class="tab col s3"><a href="#throttle" class="font_color_tab font_color_tab_unselected">Throttle</a></li>
@@ -78,7 +77,7 @@
                 <div class="col s6 card card_padding">
                     <p class="index_sub_head"><u>Time Since Engine Start</u></p>
                     <p class="value color11 runtime-since-engine-start">{{ $data['runtime_since_engine_start'] ? $data['runtime_since_engine_start'] : 0 }}</p>
-                    <p class="unit center_circle">seconds</p>
+                    <p class="unit center_circle">HH : ii : mm</p>
                 </div>
                 <div class="col s6 card card_padding">
                     <p class="index_sub_head"><u>Distance Travelled With MIL</u></p>

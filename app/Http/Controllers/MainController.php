@@ -10,8 +10,6 @@ use App\Models\DeviceConfig;
 use App\Models\DeviceDetails;
 use App\Models\ShowData;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Pusher\Pusher;
 
 class MainController extends Controller
 {
@@ -31,12 +29,14 @@ class MainController extends Controller
     public function showIndex($deviceId)
     {
         $error = $this->validateDevice($deviceId);
-        if($error){
+        if($error) {
             return $error;
         }
 
-        $this->initShowData($deviceId);
-        $data = ShowData::where('device_id', $deviceId)->orderBy('id', 'DESC')->first();
+        $data = ShowData::where('device_id', $deviceId)->first();
+        if(!$data){
+            $this->initShowData($deviceId);
+        }
         return view('index', compact('data'));
     }
 
@@ -113,8 +113,7 @@ class MainController extends Controller
             return response()->json(['success' => false, 'error' => 'Server error in updating device data']);
         }
 
-        //get the latest data
-        $this->broadcastData($data);
+        return response()->json(['success' => true, 'payload' => $data]);
     }
 
     private function validateDevice($deviceId){
@@ -128,28 +127,26 @@ class MainController extends Controller
         }
     }
 
-    private function broadcastData($data)
-    {
-
-        $options = array(
-            'cluster' => 'ap2',
-            'encrypted' => true
-        );
-        $pusher = new Pusher(
-            'e9282422f2a20f13c198',
-            'b5b4752b64428497bd45',
-            '400257',
-            $options
-        );
-
-        Log::info('before trigerring data');
-        $pusher->trigger('my-channel'.$data['device_id'], 'my-event', $data);
-    }
+//    private function broadcastData($data)
+//    {
+//
+//        $options = array(
+//            'cluster' => 'ap2',
+//            'encrypted' => true
+//        );
+//        $pusher = new Pusher(
+//            'e9282422f2a20f13c198',
+//            'b5b4752b64428497bd45',
+//            '400257',
+//            $options
+//        );
+//
+//        $pusher->trigger('my-channel' . $data['device_id'], 'my-event', ['message'=>'hello']);
+//    }
 
     private function getDeviceData($deviceId, $payload){
 
         $data = [
-            'device_id' => $deviceId,
             'engine_load' => $payload['ENGINE_LOAD'],
             'engine_coolent_temp' => $payload['ENGINE_COOLANT_TEMP'],
             'fuel_pressure' => $payload['FUEL_PRESSURE'],
@@ -158,7 +155,6 @@ class MainController extends Controller
             'speed' => $payload['SPEED'],
             'intake_air_temp' => $payload['AIR_INTAKE_TEMP'],
             'throttle_position' => $payload['THROTTLE_POS'],
-            'runtime_since_engine_start' => $payload['ENGINE_RUNTIME'],
             'dist_travelled_with_MIL' => $payload['DISTANCE_TRAVELED_MIL_ON'],
             'fuel_rail_pressure' => $payload['FUEL_RAIL_PRESSURE'],
             'barometric_pressure' => $payload['BAROMETRIC_PRESSURE'],
@@ -166,9 +162,14 @@ class MainController extends Controller
             'ambient_air_temp' => $payload['AMBIENT_AIR_TEMP']
         ];
 
-        return  array_map(function($entry){
+        $data = array_map(function($entry){
             return (float)$entry;
         }, $data);
+
+        $data['device_id'] =   $deviceId;
+        $data['runtime_since_engine_start'] = $payload['ENGINE_RUNTIME'];
+
+        return $data;
     }
 
     private function initShowData($deviceId){

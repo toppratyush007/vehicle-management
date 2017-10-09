@@ -105,7 +105,7 @@ input[type=text]:not(.browser-default).height_input {
 }
 
 .row.action_bar {
-	background: #e5aa2d;
+	background: #000D45;
 	margin-bottom: 1px;
 }
 
@@ -165,10 +165,9 @@ input[type=text]:not(.browser-default).height_input {
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
 */
-    margin-bottom: 0px;
     padding: 10px;
-    margin: 0px;
-    background: #FFBD33;
+    margin: 0;
+    background: #000D45;
     color: white;
 }
 
